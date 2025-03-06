@@ -82,12 +82,12 @@ http://localhost:8081/swagger/index.html
 
 # 伍  感谢各位师傅
 
-## 5.1 收藏家
+## 5.1 Stargazers
 
 [![Stargazers repo roster for @A7cc/Vulnerabilities_Server](http://reporoster.com/stars/A7cc/Vulnerabilities_Server)](https://github.com/A7cc/Vulnerabilities_Server/stargazers)
 
 
-## 5.2 Stargazers
+## 5.2 Forkers
 
 [![Forkers repo roster for @A7cc/Vulnerabilities_Server](http://reporoster.com/forks/A7cc/Vulnerabilities_Server)](https://github.com/A7cc/Vulnerabilities_Server/network/members)
 
