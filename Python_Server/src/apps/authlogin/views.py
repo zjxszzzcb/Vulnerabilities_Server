@@ -4,7 +4,7 @@ from django.conf import settings
 from apps.user.models import User
 from rest_framework_jwt.settings import api_settings
 from django.views.decorators.http import require_http_methods
-from common import helper
+from common import decodes, helper
 import json, base64, hashlib
 
 
@@ -28,10 +28,9 @@ def auth_login(request):
         user = User.objects.get(username=username)
     except:
         return JsonResponse({'code': -1, 'message': '登录失败，用户名不存在'})
-    md5_obj = hashlib.md5()
-    md5_obj.update(user.password.encode('utf-8'))
-    if md5_obj.hexdigest() != base64.b64decode(password).decode('utf-8')[:32]:
-        return JsonResponse({'code': -1, 'message': '登录失败，密码错误'})
+    pwd, err = decodes.CustomDecrypt(password)
+    if err != "" or pwd != user.password:
+        return JsonResponse({"code":-1, "message":"登录失败，用户名或密码不正确"})
     
     return JsonResponse({'code': 200, 'message': '登录成功', 'result': {
         'uid': user.id,

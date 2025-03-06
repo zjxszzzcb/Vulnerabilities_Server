@@ -38,7 +38,7 @@
                 注册时间：{{formatTime(userInfo.createTime,'yyyy-MM-dd HH:mm:ss')}}
               </p>
             </div>
-            <p class="demo-rich-content__desc" style="margin: 0">
+            <div class="demo-rich-content__desc" style="margin: 0">
             <div
                 style="float:left;width: 75px;padding:10px;border-right: 1px solid rgb(205, 205, 205);text-align: center;">
               <p>性别</p>
@@ -60,7 +60,7 @@
                 <span >{{userInfo.role}}</span>
               </p>
             </div>
-            </p>
+            </div>
           </div>
         </template>
         <!--用户信息 end-->

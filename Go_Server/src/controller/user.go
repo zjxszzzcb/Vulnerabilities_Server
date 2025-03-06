@@ -52,10 +52,21 @@ func AddUser(c *gin.Context) {
 		helper.ErrorResponse(c, "参数绑定", err)
 		return
 	}
+	// 进行3DES加解密
+	username, err := helper.TripleDESDecrypt(in.Username)
+	if err != nil {
+		helper.ErrorResponse(c, "新增用户信息", err)
+		return
+	}
+	password, err := helper.TripleDESDecrypt(in.Password)
+	if err != nil {
+		helper.ErrorResponse(c, "新增用户信息", err)
+		return
+	}
 	// 1.判断用户名是否存在
 	var cnt int64
 	// 大于0说明存在用户
-	if err := models.DB.Model(new(models.SysUser)).Where("username = ?", in.Username).Count(&cnt).Error; cnt > 0 && err == nil {
+	if err := models.DB.Model(new(models.SysUser)).Where("username = ?", string(username)).Count(&cnt).Error; cnt > 0 && err == nil {
 		helper.ErrorResponse(c, "新增用户信息", fmt.Errorf("用户名已经存在"))
 		return
 	}
@@ -76,8 +87,8 @@ func AddUser(c *gin.Context) {
 	}
 	// 2.保存数据
 	if err := models.DB.Create(&models.SysUser{
-		UserName: in.Username,
-		PassWord: in.Password,
+		UserName: username,
+		PassWord: password,
 		Phone:    in.Phone,
 		Status:   in.Status,
 		Role_id:  in.Role_id,
@@ -118,13 +129,29 @@ func GetUserDetail(c *gin.Context) {
 	data := new(define.GetUserDetailReply)
 	// 赋值
 	data.ID = sysUser.ID
-	data.Username = sysUser.UserName
-	data.Password = sysUser.PassWord
+	data.Username, err = helper.RSAEncrypted(sysUser.UserName)
+	if err != nil {
+		helper.ErrorResponse(c, "获取管理员详细信息", err)
+		return
+	}
+	data.Password, err = helper.RSAEncrypted(sysUser.PassWord)
+	if err != nil {
+		helper.ErrorResponse(c, "获取管理员详细信息", err)
+		return
+	}
 	data.Sex = sysUser.Sex
 	data.Status = sysUser.Status
 	data.Role_id = sysUser.Role_id
-	data.Phone = sysUser.Phone
-	data.Email = sysUser.Email
+	data.Phone, err = helper.RSAEncrypted(sysUser.Phone)
+	if err != nil {
+		helper.ErrorResponse(c, "获取管理员详细信息", err)
+		return
+	}
+	data.Email, err = helper.RSAEncrypted(sysUser.Email)
+	if err != nil {
+		helper.ErrorResponse(c, "获取管理员详细信息", err)
+		return
+	}
 	data.Remarks = sysUser.Remarks
 	// 返回管理员信息
 	helper.SuccessResponse(c, "获取管理员详细信息", data)

@@ -4,11 +4,7 @@ import (
 	"Go_server/config"
 	"Go_server/define"
 	"archive/zip"
-	"crypto/aes"
-	"crypto/cipher"
-	"encoding/base64"
 	"errors"
-	"fmt"
 	"io"
 	"mime/multipart"
 	"net/http"
@@ -210,79 +206,4 @@ func Unzip(srczip, target_dir string) (string, error) {
 		zipped.Close()
 	}
 	return target_dir, err
-}
-
-// AESDecrypt使用PKCS7填充进行AES-256-CBC解密
-func AESDecrypt(ciphertextBase64 string) (string, error) {
-	key := "8ffe7d19cbc24e898b3344d06cf842e2"
-	iv := "1cfc13bd74a2"
-
-	// 确保key和IV长度正确
-	if len(key) < 32 {
-		for len(key) < 32 {
-			key += "\x00"
-		}
-	} else if len(key) > 32 {
-		key = key[:32]
-	}
-
-	if len(iv) < 16 {
-		for len(iv) < 16 {
-			iv += "\x00"
-		}
-	} else if len(iv) > 16 {
-		iv = iv[:16]
-	}
-	// 解码Base64编码的密文
-	ciphertext, err := base64.StdEncoding.DecodeString(ciphertextBase64)
-	if err != nil {
-		return "", fmt.Errorf("failed to decode base64 ciphertext: %v", err)
-	}
-
-	// 将key和IV转换为字节片
-	keyBytes := []byte(key)
-	ivBytes := []byte(iv)
-
-	// 确保key和IV的长度正确
-	if len(keyBytes) != 32 {
-		return "", fmt.Errorf("key must be 32 bytes (256 bits)")
-	}
-	if len(ivBytes) != aes.BlockSize {
-		return "", fmt.Errorf("IV must be %d bytes", aes.BlockSize)
-	}
-
-	// 创建AES分组密码
-	block, err := aes.NewCipher(keyBytes)
-	if err != nil {
-		return "", fmt.Errorf("failed to create AES cipher: %v", err)
-	}
-
-	// 使用CBC模式解密密文
-	mode := cipher.NewCBCDecrypter(block, ivBytes)
-	plaintextPadded := make([]byte, len(ciphertext))
-	mode.CryptBlocks(plaintextPadded, ciphertext)
-
-	// 删除 PKCS7 padding
-	plaintext, err := removePKCS7Padding(plaintextPadded)
-	if err != nil {
-		return "", fmt.Errorf("failed to remove padding: %v", err)
-	}
-
-	return string(plaintext), nil
-}
-
-// 从明文中删除PKCS7填充
-func removePKCS7Padding(plaintext []byte) ([]byte, error) {
-	paddingLen := int(plaintext[len(plaintext)-1])
-	if paddingLen > len(plaintext) || paddingLen == 0 {
-		return nil, fmt.Errorf("invalid padding length")
-	}
-
-	for _, pad := range plaintext[len(plaintext)-paddingLen:] {
-		if int(pad) != paddingLen {
-			return nil, fmt.Errorf("invalid padding byte")
-		}
-	}
-
-	return plaintext[:len(plaintext)-paddingLen], nil
 }

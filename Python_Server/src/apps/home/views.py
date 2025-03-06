@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from django.http.response import JsonResponse
 from django.conf import settings
-from common import helper
+from common import helper, decodes
 import apps, json, requests, random, os, base64
 from .forms import *
 from django.http import QueryDict
@@ -64,7 +64,7 @@ def home_updatePwd(request):
     except:
         return JsonResponse({'code': -1, 'message': '参数绑定失败'})
     # 解密
-    plaintext, err = helper.AesDecrypt(aesdata.get("data"))
+    plaintext, err = decodes.AesDecrypt(aesdata.get("data"))
     if err != "":
         return JsonResponse({"code":-1, "message":"修改密码失败, 解密错误"})
     try:

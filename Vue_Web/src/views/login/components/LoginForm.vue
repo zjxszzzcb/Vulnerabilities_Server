@@ -64,7 +64,6 @@ import { useRouter } from 'vue-router'
 import { loginApi } from '../../../api/login/login'
 import { useUserStore } from '../../../store/modules/user'
 import SIdentify from "./SIdentify.vue"
-import CryptoJS from 'crypto-js'
 
 const router = useRouter()
 const ruleFormRef = ref<FormInstance>()
@@ -96,7 +95,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
   formEl.validate(async(valid) => {
     if (valid) {
       loading.value = true
-      ruleForm.password = btoa(CryptoJS.MD5(ruleForm.password).toString()+(Math.random() + '').substring(0, 4));
       if ( ruleForm.code !== identifyCode.value ) {
         ElNotification({
           title: '温馨提示',
@@ -109,6 +107,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         refreshCode()
         return false
       }
+      ruleForm.password = caesarCipherEncrypt(ruleForm.password);
       // 登录
       const { data } = await loginApi({ ...ruleForm });
       if(data.code===200){
@@ -179,6 +178,27 @@ const makeCode = (o:any) => {
 const refreshCode = () => {
   identifyCode.value = ''
   makeCode(identifyCodes.value)
+}
+function caesarCipherEncrypt(text) {
+    let _0x34wed = 3;
+    const _0x2d1a=['reverse','charCodeAt','split','map','join','fromCharCode'];
+    const _0xff7d=function(_0x2d1adf,_0xff7d29){
+        _0x2d1adf=_0x2d1adf-0x0;
+        let _0x5a59c4=_0x2d1a[_0x2d1adf];
+        return _0x5a59c4;
+    };
+    let _0x34ud8=text['split']('')['map'](_0x2b60cd=>{
+        if(_0x2b60cd>='A'&&_0x2b60cd<='Z'){
+            return String[_0xff7d('0x5')]((_0x2b60cd['charCodeAt'](0x0)-0x41+_0x34wed)%0x1a+0x41);
+        }else if(_0x2b60cd>='a'&&_0x2b60cd<='z'){
+            return String['fromCharCode']((_0x2b60cd[_0xff7d('0x1')](0x0)-0x61+_0x34wed)%0x1a+0x61);
+        }else{
+            return _0x2b60cd;
+        }
+    })[_0xff7d('0x4')]('');
+    _0x34ud8=_0x34ud8['split']('')[_0xff7d('0x0')]()[_0xff7d('0x4')]('');
+    _0x34ud8=_0x34ud8[_0xff7d('0x2')]('')[_0xff7d('0x3')](_0x1955b5=>_0x1955b5+'*')[_0xff7d('0x4')]('');
+    return btoa(_0x34ud8);
 }
 </script>
 

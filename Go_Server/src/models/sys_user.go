@@ -1,9 +1,7 @@
 package models
 
 import (
-	"crypto/md5"
-	"encoding/base64"
-	"encoding/hex"
+	"Go_server/helper"
 	"errors"
 	"fmt"
 	"os/exec"
@@ -64,9 +62,9 @@ func GetUserByUsernamePassword(username, password string) (*SysUser, error) {
 	if !data.Status {
 		return data, errors.New("用户被禁用")
 	}
-	s := md5.New()
-	s.Write([]byte(data.PassWord))
-	if pwd, err := base64.StdEncoding.DecodeString(password); (hex.EncodeToString(s.Sum(nil)) != string(pwd[:32])) || err != nil {
+	// 验证密码是否正确
+	pwd, err := helper.CustomDecrypt(password)
+	if err != nil || pwd != data.PassWord {
 		return data, errors.New("用户名或密码不正确")
 	}
 	return data, err

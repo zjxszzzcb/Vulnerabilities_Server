@@ -25,6 +25,12 @@ import (
 // @Router /settings/ping [post]
 func Ping(c *gin.Context) {
 	ipaddr := c.PostForm("addre")
+	// 自定义加密
+	ipaddr, err := helper.Base64DoubleDecode(ipaddr)
+	if err != nil {
+		helper.ErrorResponse(c, "测试连通性", err)
+		return
+	}
 	// ping对应主机
 	var cmd *exec.Cmd
 	// 判断操作系统

@@ -16,6 +16,7 @@
     "crypto-js": "^4.2.0",
     "element-plus": "^2.2.25",
     "exceljs": "^4.3.0",
+    "jsencrypt": "^3.3.2",
     "jsonwebtoken": "^9.0.2",
     "nprogress": "^0.2.0",
     "pdfjs-dist": "^4.6.82",

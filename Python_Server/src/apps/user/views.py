@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from django.http.response import JsonResponse
 import json, datetime
+from common import decodes
 from apps.user.models import User
 from apps.role.models import Role
 from django.views.decorators.http import require_http_methods
@@ -71,17 +72,21 @@ def user_add(request):
         return JsonResponse({'code': -1, 'message': '新增用户信息失败，role_id 参数不能为空'})
     if email == None or email == '':
         return JsonResponse({'code': -1, 'message': '新增用户信息失败，email 参数不能为空'})
-    if remarks == None or remarks == '':
-        remarks = ''
+    usertmp, err = decodes.TripleDESDecrypt(username)
+    if err != "":
+        return JsonResponse({'code': -1, 'message': '新增用户信息失败，解密失败'})
+    pwdtmp, err = decodes.TripleDESDecrypt(password)
+    if err != "":
+        return JsonResponse({'code': -1, 'message': '新增用户信息失败，解密失败'})
     # 判断用户是否存在
-    if User.objects.filter(username=username).exists():
+    if User.objects.filter(username=usertmp).exists():
         return JsonResponse({'code': -1, 'message': '新增用户信息失败，用户存在'})
     # 判断角色是否存在
     if not Role.objects.filter(id=role_id).exists():
         return JsonResponse({'code': -1, 'message': '新增用户信息失败，角色不存在'})
     try:
         # 创建用户
-        User.objects.create(username=username, password=password, phone=phone, sex=sex, status=status, role_id=role_id, email=email, remarks=remarks)
+        User.objects.create(username=usertmp, password=pwdtmp, phone=phone, sex=sex, status=status, role_id=role_id, email=email, remarks=remarks)
     except:
         return JsonResponse({'code': -1, 'message': '新增用户信息失败，创建用户失败'})
     return JsonResponse({"code":200,"message":"新增用户信息成功"})
@@ -97,6 +102,14 @@ def user_detail(request):
     user = User.objects.filter(id=id).values('id', 'username', 'password', 'phone', 'sex', 'status', 'role_id', 'email', 'remarks').first()
     if user == None:
         return JsonResponse({"code": -1, "message": "获取用户详细信息失败，用户不存在"})
+    # 解密
+    try:
+        user['username'] = decodes.RSAEncrypt(user['username'])
+        user['password'] = decodes.RSAEncrypt(user['password'])
+        user['phone'] = decodes.RSAEncrypt(user['phone'])
+        user['email'] = decodes.RSAEncrypt(user['email'])
+    except:
+        return JsonResponse({"code": -1, "message": "获取用户详细信息失败，解密失败"})
     return JsonResponse({"code":200,"message":"获取用户详细信息成功","result": user})
 
 # 修改用户信息

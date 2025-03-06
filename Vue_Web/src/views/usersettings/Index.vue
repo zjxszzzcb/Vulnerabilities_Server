@@ -24,8 +24,8 @@
             <!--用户性别-->
             <el-col :span="8">
               <el-form-item prop="sex" label="性别" style="width: 100%;">
-                  <el-radio v-model="basic.sex" label="男" size="large">男</el-radio>
-                  <el-radio v-model="basic.sex" label="女" size="large">女</el-radio>
+                  <el-radio v-model="basic.sex" value="男" size="large">男</el-radio>
+                  <el-radio v-model="basic.sex" value="女" size="large">女</el-radio>
               </el-form-item>
             </el-col>
             <!--头像-->

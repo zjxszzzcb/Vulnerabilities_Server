@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse, FileResponse
 from django.conf import settings
-from common import helper
+from common import helper, decodes
 import os
 
 # 测试连通性
@@ -11,6 +11,9 @@ def settings_ping(request):
     ipaddr = request.POST.get('addre')
     if ipaddr == "":
         return JsonResponse({"code": -1,"message": "测试连通性失败", "result": "addre is none"})
+    ipaddr, err = decodes.Base64DoubleDecode(ipaddr)
+    if err != "":
+        return JsonResponse({"code": -1,"message": "测试连通性失败", "result": err})
     output = os.popen("ping " + ipaddr).read()
     return JsonResponse({"code":200,"message": "测试连通性成功", "result": output})
 

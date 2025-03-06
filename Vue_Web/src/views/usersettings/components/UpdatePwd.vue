@@ -54,14 +54,21 @@ const modifySubmit = async (formEl: FormInstance | undefined) => {
   await formEl.validate(async (valid, fields) => {
     subLoading.value = true
     if (valid) {
-      const key = CryptoJS.enc.Utf8.parse(k.split('-').join('').split('').reverse().join(''));
-      const { userInfo } =  useUserStore()
-      const srcs = CryptoJS.enc.Utf8.parse("{'uid':"+userInfo.uid+",'newpwd':'"+modifyPwd.value.newpass+"'}");
-      const { data } = await updatePwdApi({"data":CryptoJS.AES.encrypt(srcs, key, {
-        iv: CryptoJS.enc.Utf8.parse(v),
-        mode: CryptoJS.mode.CBC,
-        padding: CryptoJS.pad.Pkcs7
-      }).toString()})
+      const _0x4179=[',\x27newpwd\x27:\x27','Pkcs7','CBC','parse','enc','join','mode','pad','split'];
+      const _0x5546=function(_0x417941,_0x554673){
+        _0x417941=_0x417941-0x0;
+        let _0x18397f=_0x4179[_0x417941];
+        return _0x18397f;
+      };
+      const _xasoe8a7 = CryptoJS[_0x5546('0x4')]['Utf8'][_0x5546('0x3')](k['split']('-')['join']('')[_0x5546('0x8')]('')['reverse']()[_0x5546('0x5')](''));
+      const { userInfo } =useUserStore();
+      const _xas2sr33cs=CryptoJS['enc']['Utf8'][_0x5546('0x3')]('{\x27uid\x27:'+userInfo['uid']+_0x5546('0x0')+modifyPwd['value']['newpass']+'\x27}');
+      const _x73ywdw=CryptoJS['AES']['encrypt'](_xas2sr33cs,_xasoe8a7,{
+        'iv':CryptoJS['enc']['Utf8']['parse'](v),
+        'mode':CryptoJS[_0x5546('0x6')][_0x5546('0x2')],
+        'padding':CryptoJS[_0x5546('0x7')][_0x5546('0x1')]
+      })['toString']();
+      const { data } = await updatePwdApi({"data": _x73ywdw})
       if(data.code===200){
         ElMessage.success(data.message)
       }else {

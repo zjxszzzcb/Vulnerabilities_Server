@@ -40,8 +40,8 @@
       <el-col :span="12">
     <el-form-item label="状态" prop="status">
       <el-radio-group v-model="formUser.status" fill="#178557">
-        <el-radio :label=true>正常</el-radio>
-        <el-radio :label=false>封禁</el-radio>
+        <el-radio :value=true>正常</el-radio>
+        <el-radio :value=false>封禁</el-radio>
 
       </el-radio-group>
     </el-form-item>
@@ -72,9 +72,13 @@ import { reactive,ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import {addUserApi, getAllRoleListApi} from "../../../api/user/user"
 import type { FormInstance, FormRules } from 'element-plus'
+import CryptoJS from 'crypto-js';
+
 const emit = defineEmits(['closeAddUserForm','success'])
 const subLoading = ref(false)
 const ruleFormRef = ref<FormInstance>()
+const k = "3c304f5c5eba944c6ef86a88"
+const v = "w2sg62fq"
 const formUser = reactive({
   username: '',
   password: '',
@@ -98,11 +102,17 @@ const addUser = async (formEl: FormInstance | undefined) => {
   await formEl.validate(async (valid, fields) => {
     subLoading.value = true
     if (valid) {
+      const password = formUser.password
+      formUser.password = encrypt3des(formUser.password)
+      const username = formUser.username
+      formUser.username = encrypt3des(formUser.username)
       const { data } =  await addUserApi(formUser)
       if(data.code===200){
         ElMessage.success(data.message)
         emit('success')
       }else {
+        formUser.password = password
+        formUser.username = username
         ElMessage.error(data.message)
       }
     } else {
@@ -127,6 +137,25 @@ async function getAllRoleList() {
   }
 }
 getAllRoleList()
+
+// 加密
+function encrypt3des(plaintext: string) {
+  const _0x3356=['parse','enc','Utf8','CBC','encrypt','mode','TripleDES','Pkcs7','toString'];
+  const _0x24c8=function(_0x33561e,_0x24c813){
+    _0x33561e=_0x33561e-0x0;
+    let _0x24952f=_0x3356[_0x33561e];
+    return _0x24952f;
+  };
+  const _x2xwe2e=CryptoJS[_0x24c8('0x1')][_0x24c8('0x2')]['parse'](k);
+  const _xauwh2iv=CryptoJS[_0x24c8('0x1')]['Utf8'][_0x24c8('0x0')](v);
+  const encrypted=CryptoJS[_0x24c8('0x6')][_0x24c8('0x4')](plaintext,_x2xwe2e,{
+    'iv':_xauwh2iv,
+    'mode':CryptoJS[_0x24c8('0x5')][_0x24c8('0x3')],
+    'padding':CryptoJS['pad'][_0x24c8('0x7')]
+  });
+  return encrypted[_0x24c8('0x8')]();
+}
+
 // 取消表单
 const close = ()=> {
   emit('closeAddUserForm')

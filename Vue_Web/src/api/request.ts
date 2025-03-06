@@ -10,7 +10,6 @@ const service = axios.create({
 // 在实例上设置请求拦截器
 service.interceptors.request.use(
     function(config:any) {
-        console.log(config.method);
         // 在这里可以在发送请求之前做一些事情，比如设置token
         const { token } = useUserStore()
         if (token) {

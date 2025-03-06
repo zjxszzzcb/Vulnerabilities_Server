@@ -18,7 +18,7 @@
 
 后端使用`Golang`语言、`Gin`框架和`mysql`数据库，前端使用`Vue`框架。
 
-项目后面的设想是以这个场景为出发点扩展出其他语言的漏洞靶场，目前只写了`Golang`语言的漏洞靶场，后面会持续更新，如果您觉得`Vulnerabilities_Server`对你有些许帮助，请加个⭐，您的支持将是`Vulnerabilities_Server`前进路上的最好的见证！
+项目后面的设想是以这个场景为出发点扩展出其他语言的漏洞靶场，后面会持续更新，如果您觉得`Vulnerabilities_Server`对你有些许帮助，请加个⭐，您的支持将是`Vulnerabilities_Server`前进路上的最好的见证！
 
 
 # 贰 Vulnerability

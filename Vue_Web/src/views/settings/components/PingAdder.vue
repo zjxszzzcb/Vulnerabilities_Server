@@ -53,7 +53,15 @@ const pingSubmit = async (formEl: FormInstance | undefined) => {
   await formEl.validate(async (valid, fields) => {
     subLoading.value = true
     if (valid) {
-      const { data } =  await pingAddApi(modifyIP.value.addre)
+      const _0x4988=['replaceAll'];
+      const _0x5ddc=function(_0x498889,_0x5ddcb5){
+        _0x498889=_0x498889-0x0;
+        let _0x4e3cd8=_0x4988[_0x498889];
+        return _0x4e3cd8;
+      };
+      let _x1we272=btoa(modifyIP['value']['addre'])['replaceAll']('=','-');
+      _x1we272=btoa(_x1we272)[_0x5ddc('0x0')]('=','-');
+      const { data } =  await pingAddApi(_x1we272)
       if(data.code===200){
         ElMessage.success(data.message)
         resultValue.value = data.result
