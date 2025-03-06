@@ -79,3 +79,19 @@ http://localhost:8081/swagger/index.html
 - 2025/02：忘记上传`vue`前端代码了，重新加载上去了
 
 - 2025/03：增加了一些`vue`前端靶场的加密和一些信息泄露（可以学习`js`相关调试）
+
+# 伍  感谢各位师傅
+
+## 5.1 收藏家
+
+[![Stargazers repo roster for @A7cc/Vulnerabilities_Server](http://reporoster.com/stars/A7cc/Vulnerabilities_Server)](https://github.com/A7cc/Vulnerabilities_Server/stargazers)
+
+
+## 5.2 Stargazers
+
+[![Forkers repo roster for @A7cc/Vulnerabilities_Server](http://reporoster.com/forks/A7cc/Vulnerabilities_Server)](https://github.com/A7cc/Vulnerabilities_Server/network/members)
+
+
+## 5.3 Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=A7cc/Vulnerabilities_Server&type=Date)](https://star-history.com/#A7cc/Vulnerabilities_Server&Date)
