@@ -92,4 +92,4 @@ http://localhost:8081/swagger/index.html
 
 ## 5.3 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=A7cc/Vulnerabilities_Server&type=Date)](https://star-history.com/#A7cc/Vulnerabilities_Server&Date)
+[![Stargazers over time](https://starchart.cc/A7cc/Vulnerabilities_Server.svg)](https://starchart.cc/A7cc/Vulnerabilities_Server)
