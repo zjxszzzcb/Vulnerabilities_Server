@@ -38,7 +38,7 @@ ping处：命令执行
 
 订单查询处,添加菜品：SQL注入
 
-所有的文件上传功能点：文件上传（不能getshell）
+所有的文件上传功能点：文件上传
 
 多处存在：越权、未授权
 
@@ -88,4 +88,5 @@ go run .
 ```bash
 http://localhost:8081/swagger/index.html
 ```
+
 
