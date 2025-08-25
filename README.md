@@ -1,6 +1,6 @@
 # 零 注意（Tips）
 
-- 1.请勿将本系统用于开发项目，系统中存在许多漏洞，仅允许帮助安全研究人员和业余爱好者了解和掌握有关Golang系统的渗透测试和代码审计知识。
+- 1.请勿将本系统用于开发项目，系统中存在许多漏洞，仅允许帮助安全研究人员和业余爱好者了解和掌握有关系统的渗透测试和代码审计知识。
 
   1.Do not use this system for development projects, there are many vulnerabilities in the system, only allowed to help security researchers and hobbyists understand and master the penetration testing and code audit knowledge about the Golang system.
 
@@ -93,3 +93,4 @@ http://localhost:8081/swagger/index.html
 ## 5.3 Star History
 
 [![Stargazers over time](https://starchart.cc/A7cc/Vulnerabilities_Server.svg)](https://starchart.cc/A7cc/Vulnerabilities_Server)
+
