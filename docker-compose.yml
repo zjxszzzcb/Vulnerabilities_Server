@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # MySQL数据库服务
+  db:
+    image: mysql:8.0
+    container_name: vuln_server_db
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: vul_server_py
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./Python_Server/dbdata/vul_server_py.sql:/docker-entrypoint-initdb.d/init.sql
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Python后端服务
+  backend:
+    build:
+      context: ./Python_Server
+      dockerfile: Dockerfile
+    container_name: vuln_server_backend
+    ports:
+      - "${VULN_SERVER_BACKEND_PORT:-8081}:8081"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_NAME=vul_server_py
+      - DB_USER=root
+      - DB_PASSWORD=123456
+      - VULN_SERVER_DB_HOST=db
+
+  # Vue前端服务
+  frontend:
+    build:
+      context: ./Vue_Web
+      dockerfile: Dockerfile
+      args:
+        - VITE_APP_BASE_API=${VITE_APP_BASE_API}
+    container_name: vuln_server_frontend
+    ports:
+      - "${VULN_SERVER_FRONTEND_PORT:-8080}:8080"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
